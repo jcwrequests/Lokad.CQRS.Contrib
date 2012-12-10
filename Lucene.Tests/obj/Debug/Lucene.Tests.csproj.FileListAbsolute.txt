@@ -1,0 +1,14 @@
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.CQRS.Contrib\Lucene.Tests\bin\Debug\Lucene.Tests.dll
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.CQRS.Contrib\Lucene.Tests\bin\Debug\Lucene.Tests.pdb
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.CQRS.Contrib\Lucene.Tests\bin\Debug\HyperPropertyDescriptor.dll
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.CQRS.Contrib\Lucene.Tests\bin\Debug\ICSharpCode.SharpZipLib.dll
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.CQRS.Contrib\Lucene.Tests\bin\Debug\Lokad.Cqrs.Portable.dll
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.CQRS.Contrib\Lucene.Tests\bin\Debug\Lokad.Portable.Lucene.dll
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.CQRS.Contrib\Lucene.Tests\bin\Debug\Lucene.Net.dll
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.CQRS.Contrib\Lucene.Tests\bin\Debug\Lucene.Wires.dll
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.CQRS.Contrib\Lucene.Tests\bin\Debug\protobuf-net.dll
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.CQRS.Contrib\Lucene.Tests\bin\Debug\Lokad.Portable.Lucene.pdb
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.CQRS.Contrib\Lucene.Tests\bin\Debug\Lucene.Wires.pdb
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.CQRS.Contrib\Lucene.Tests\obj\Debug\Lucene.Tests.csprojResolveAssemblyReference.cache
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.CQRS.Contrib\Lucene.Tests\obj\Debug\Lucene.Tests.dll
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.CQRS.Contrib\Lucene.Tests\obj\Debug\Lucene.Tests.pdb
