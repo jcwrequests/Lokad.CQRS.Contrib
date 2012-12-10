@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Lucene</title>
+<style type="text/css">
+<!--
+.style6 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+}
+.style7 {font-family: Verdana, Arial, Helvetica, sans-serif}
+-->
+</style>
+<script>
+var quote = "'";
+var quote2 = '"';
+ 
+function nextPage(pagen) {
+document.getElementById("lucene").src = "lucene" + pagen + ".html#top"
+
+if(pagen == "1") {document.getElementById("next").innerHTML="<a href=" + quote + "javascript: nextPage(" + quote2 + "2" + quote2 + ")" + quote + ";>Next -->";
+document.getElementById("next2").innerHTML="<a href=" + quote + "javascript: nextPage(" + quote2 + "2" + quote2 + ")" + quote + ";>Next -->"; document.getElementById("lucene").height=2700;}; 
+ 
+if(pagen == "3") {document.getElementById("next").innerHTML="<a href=" + quote + "javascript: nextPage(" + quote2 + "2" + quote2 + ")" +quote + ";><--Previous";
+document.getElementById("next2").innerHTML="<a href=" + quote + "javascript: nextPage(" + quote2 + "2" + quote2 + ")" +quote + ";><--Previous"; document.getElementById("lucene").height=2700;};
+if(pagen == "2") {document.getElementById("next").innerHTML="<a href=" + quote + "javascript: nextPage(" + quote2 + "1" + quote2 + ")" + quote + ";><--Previous" + "<a href=" + quote + "javascript: nextPage(" + quote2 + "3" + quote2 + ")" + quote + ";>  Next -->";
+document.getElementById("next2").innerHTML="<a href=" + quote + "javascript: nextPage(" + quote2 + "1" + quote2 + ")" + quote + ";><--Previous" + "<a href=" + quote + "javascript: nextPage(" + quote2 + "3" + quote2 + ")" + quote + ";>  Next -->";  document.getElementById("lucene").height=2700;}; 
+//if(pagen == "2") {document.getElementById("next").innerHTML="test"}; 
+}
+</script>
+</head>
+
+<body onLoad="nextPage('1');">
+<a name="top" id="top"></a>
+<p><img src="images/manning_masthead.jpg" width="640" height="82" /></p>
+<table width="900" height=2777 border="0">
+  <tr>
+    <th width="680" height="37"  scope="row">  <span class="style6">&nbsp;<span class="style5"><a href="javascript: nextPage('1');">1</a>&nbsp;<a href="javascript: nextPage('2');" >2</a>&nbsp;<a href="javascript: nextPage('3');">3</a>&nbsp; 
+       <div id="next">Next--&gt;</div>  
+     </span>  </th>
+    <td width="210">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="730" rowspan="2" scope="row"><iframe id="lucene" height=2700 width=720 src="lucene1.html" frameBorder="0" ></iframe></td>
+    <td  height=434 width=210><a target="_blank" href="http://www.manning.com/dashorst"><img src="images/BuschBlock.jpg" width="200" height="450" vspace="0" border="3" align="top" /></a></td>
+  </tr>
+  <tr>
+    <td  height=999>&nbsp;</td>
+  </tr>
+  <tr>
+    <td scope="row" height=30><div align="center"> <span class="style6">&nbsp;<span class="style5"><a href="javascript: nextPage('1');">1</a>&nbsp;<a href="javascript: nextPage('2');" >2</a>&nbsp;<a href="javascript: nextPage('3');">3</a> &nbsp;   <div id="next2">Next--&gt;</div>  </div></td>
+    <td  height=30>&nbsp;</td>
+  </tr>
+</table>
+<p align="center">&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>

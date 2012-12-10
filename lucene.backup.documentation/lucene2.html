@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Lucene  Page 2</title>
+<style type="text/css">
+<!--
+td
+{
+font-family: verdana;
+font-size: 75%;
+padding-left: 40px;
+padding-right: 40px;
+padding-top: 3px;
+padding-bottom: 3px;
+}
+
+th
+{
+font-family: verdana;
+font-size: 75%;
+text-align: left;
+padding-left: 10px;
+padding-right: 10px;
+padding-top: 3px;
+padding-bottom: 3px;
+}
+-->
+ 
+p.small {line-height: 90%}
+p.big {line-height: 200%}
+.style10 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+}
+.style11 {
+	font-size: 22px;
+	font-style: italic;
+}
+.style13 {color: #990000}
+.style14 {color: #993300}
+.style15 {font-size: 12px}
+.style16 {font-family: "Courier New", Courier, monospace}
+.style18 {color: #990000; font-weight: bold; }
+.style19 {font-weight: bold}
+</style>
+</head>
+
+<body>
+
+
+</head>
+
+<body onLoad="javascript:document.href='#top'";>
+<a name="top" id="top"></a>
+<table width="687" height="2176" border="0">
+  <tr>
+    <th height="51" class="style9" scope="row"><div align="left" class="style11 style19 style14">Restoring or replicating the index</div></th>
+  </tr>
+  <tr>
+    <td height="36" class="style10" scope="row">When it&rsquo;s time to restore the index, follow this procedure:</td>
+  </tr>
+  <tr>
+    <td height="73" class="style10" scope="row"><p>1.	Make sure all <span class="style16">IndexReader</span>s and <span class="style16">IndexWriter</span>s on the index directory are closed. <br />
+      2.	Remove all files from the index directory. </p>
+        <p><span class="style24"><span class="style18">NOTE</span><br />
+        </span><span class="style25 style15"> In Windows, if you are unable to remove certain files, this means there are still processes holding the files open. Go back to step 1.</span></p>
+      <p>3.	Copy the files from your backup into the index directory.<br />
+      </p></td>
+  </tr>
+  <tr>
+    <td height="50" scope="row"><p class="style10"><span class="style18">WARNING</span><br />
+            <span class="style25 style15">Be very careful during the copying that you don&rsquo;t encounter errors, such as disk full, as this will certainly lead to a corrupt index.</span></p></td>
+  </tr>
+  <tr>
+    <td height="50" scope="row"><p class="style10">This same approach can easily be used to efficiently replicate the index to other computers, for example, if you have a high search load and distribute searches across multiple search servers.</p></td>
+  </tr>
+ 
+  <tr>
+    <th width="681" height="80" class="style11 style13" scope="row">Technical details</th>
+  </tr>
+  <tr>
+    <td height="38" scope="row"><p class="style10">Let's dig into how <span class="style16"><strong>SnapshotDeletionPolicy</strong></span> actually works. To do that, we first need to understand Lucene's elegant segmented architecture. Figure 1 shows the structure of a Lucene index. The index is stored in separate pieces, each containing a complete index for a subset of the documents. Each segment can have many files associated with it, depending upon whether you are using the compound file format. A new segment is created when <span class="style16"><strong>IndexWriter's</strong></span> buffer is flushed. Periodically, according to the <span class="style16"><strong>MergePolicy</strong></span> and <span class="style16"><strong>MergeScheduler</strong></span> in use by your application, segments are merged together, at which point one new segment is created and the old merged segments are removed.</p>    </td>
+  </tr>
+  <tr>
+    <td height="95" scope="row"><div align="center"><img src="images/figure1.jpg" width="431" height="165" /></div></td>
+  </tr>
+  <tr>
+    <td height="68" scope="row"><p class="style10 style13">Figure 1: A Lucene index is composed of separate, independent segments, each holding a full index for a subset of the documents. A commit point (each segments_N file) references a list of segments that make up the index as it exists at that commit.</p></td>
+  </tr>
+  <tr>
+    <td height="95" class="style10" scope="row">Finally, and this is the key point, a separate file named <span class="style16"><strong>segments_N</strong></span>, where N is an integer, holds references to those segments that make up a given commit point (<span class="style16"><strong>IndexCommitPoint</strong></span>). Every time the writer commits to the index, N is increased by 1. These files are called commit points because a new one is created whenever the writer commits a change to the index. Lucene first writes all new files for a segment, and only when that is successful, writes a new segments_N file referencing that segment and de-referencing any segments that were just merged.</td>
+  </tr>
+  <tr>
+    <td  scope="row"><div class="style10" style="text-indent: 40px;">As of release 2.1, the <span class="style16"><strong>IndexDeletionPolicy</strong></span> was factored out from <span class="style16"><strong>IndexWriter</strong></span>, enabling you to customize when an old commit point gets deleted. This is useful for certain filesystems, notably NFS, that do not protect open files from being deleted. Whenever the IndexWriter creates a new commit point, it consults the deletion policy to decide which older commit points should then be deleted. The default policy is <span class="style16"><strong>KeepOnlyLastCommitDeletionPolicy</strong></span>, which removes the previous commit point whenever a new commit is done.</div></td>
+  </tr>
+  <tr>
+    <td  scope="row"><div class="style10" style="text-indent: 40px;">Listing 1 shows the source code for <span class="style16"><strong>SnapsotDeletionPolicy</strong></span>. You can see that it is surprisingly simple (less than 100 lines). Thanks to the fact that Lucene is open-source, with the liberal Apache Software Foundation License, you can see and modify any of Lucene&rsquo;s sources. <span class="style16"><strong>SnapshotDeletionPolicy</strong></span> simply wraps an existing <span class="style16"><strong>IndexDeletionPolicy</strong></span>. When you make a snapshot, it grabs the current commit point and holds a reference to it, preventing <span class="style16"><strong>IndexWriter</strong></span> from removing it. Once you release the commit point, then the next time <span class="style16"><strong>IndexWriter</strong></span> commits a change to the index, that commit point and any resulting unreferenced files will be removed.</div></td>
+  </tr>
+  <tr>
+    <td height="1273" scope="row"><img src="images/listing1a.jpg" width="604" height="1250" /> </td>
+  </tr>
+  <tr>
+    <td scope="row"><div align="center"><strong>Page 2 </strong></div></td>
+  </tr>
+</table>
+</body>
+</html>

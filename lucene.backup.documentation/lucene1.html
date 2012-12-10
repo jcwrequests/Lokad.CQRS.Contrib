@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title> Lucene Page 1</title>
+<style type="text/css">
+<!--
+td
+{
+font-family: verdana;
+font-size: 75%;
+padding-left: 40px;
+padding-right: 40px;
+padding-top: 3px;
+padding-bottom: 3px;
+}
+
+th
+{
+font-family: verdana;
+font-size: 75%;
+text-align: left;
+padding-left: 10px;
+padding-right: 10px;
+padding-top: 3px;
+padding-bottom: 3px;
+}
+.style1 {
+	color: #990000;
+	font-weight: bold;
+	font-size: 36px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+-->
+ 
+p.small {line-height: 90%}
+p.big {line-height: 200%}
+.style9 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: 24px;
+	color: #993300;
+}
+.style22 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	text-indent: -30px;
+}
+.style10 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	 
+}
+.style11 {
+	font-size: 22px;
+	font-style: italic;
+}
+.style15 {
+	font-size: 16px;
+	font-style: italic;
+}
+.style18 {
+	color: #009900;
+	font-weight: bold;
+}
+.style19 {font-size: 18px}
+.style20 {
+	color: #993300;
+	font-weight: bold;
+}
+.style21 {font-family: "Courier New", Courier, monospace}
+.style26 {font-size: 14px; font-style: italic; }
+.style27 {font-size: 12px}
+</style>
+</head>
+
+<body>
+
+
+</head>
+
+<body onLoad="javascript:document.href='#top'";>
+<a name="top" id="top"></a>
+<table width="650" height="2497" border="0">
+ 
+  <tr>
+    <th   height="63" scope="row"><p align="left" class="style1">Hot Backups with Lucene</p></th>
+  </tr>
+  <tr>
+    <th height="80" scope="row"><span class="style15">By  Michael McCandless, April 2008 </span></th>
+  </tr>
+  <tr>
+    <td height="107" bgcolor="#DDDDDD" scope="row"><p align="left" class="style26">This article is taken from the forthcoming book <span class="style18">Lucene in Action</span>, <span class="style18">Second Edition</span>. The 475-page guide is a comprehensive tutorial that shows how to use Lucene to add full-text, cross-platform search to nearly any application. This article introduces a new feature of release 2.3 that enables backing up an index without pausing indexing or restarting searches.</p></td>
+  </tr>
+  <tr>
+    <td height="91" scope="row"><p class="style10">Picture this: You own a small, very profitable and quickly growing e-commerce Web site. You carefully designed the whole user experience around the powerful open-source search engine Lucene. This search-centric approach is your secret sauce, and you know it&rsquo;s the reason you are winning over users from your competition. Eighty percent of purchases come through search. You are rightfully proud.</p></td>
+  </tr>
+  <tr>
+    <td height="95" scope="row"><div class="style10" style="text-indent: 40px;">Then the unthinkable happens: One day your hard drive crashes and your search index becomes corrupt and unusable. So what do you do? You restore from your backups! You do have backups of your search index, right? Amazingly, it's all too common for owners and administrators of search-intensive sites to overlook making regular backups of their search index. In our increasing agile, always-on, search-driven world, failing to backup your search index is a very costly mistake. Fortunately, as of version 2.3, backing up a Lucene index is now surprisingly simple. </div></td>
+  </tr>
+   <tr>
+    <td height="118" scope="row"><div class="style10" style="text-indent: 40px;">In the modern world of heavyweight, expensive, and complex closed-source enterprise search engines, Lucene is a surprising breath of fresh air. The simple design, carefully exposed API, and incredible feature set, make it trivial to add search to your application. Recently Lucene has been under very active development, quickly adding features previously available only to expensive, closed-source commercial offerings. Hot backups is just such a feature. </div></td>
+  </tr>
+  <tr>
+    <th height="44" class="style9" scope="row"><div align="left" class="style11">The challenge </div> </th>
+  </tr>
+  <tr>
+    <td height="156" scope="row"><p class="style10">The most obvious way to backup a Lucene index is to close your <span class="style21"><strong>IndexWriter</strong></span> and make a full or incremental copy of all files in the index. After all, these are just ordinary files stored in a single flat directory in the file system, so this approach will work. While this approach is simple, it has serious limitations. On Windows, if you have an <span class="style21"><strong>IndexReader</strong></span> open on the index, it can keep files around even when they are no longer needed by the most recent commit. Your backup process then wastes time and space copying these unnecessary files. You can work around that problem by always re-opening your reader, after closing the <span class="style21"><strong>IndexWriter</strong></span> and before running the backup.</p>      </td>
+  </tr>
+  <tr>
+    <td height="144" scope="row"> <div class="style10" style="text-indent: 40px;">
+    <span class="style10">But here's another problem: You can't open another <span class="style21"><strong>IndexWriter</strong></span> until the backup finishes because the writer might change the index while the backup is running, which would corrupt your backup. This means you cannot make any updates to your index while the backup is running, making your index read-only. Worse, you can neither predict nor control how long this read-only down time will actually be. It could be 30 seconds or it could be an hour or more, depending on the size of your index and the availability of overall IO bandwidth.</span> </div></td>
+  </tr>
+   <tr>
+    <td scope="row"> <div class="style10" style="text-indent: 40px;">
+    <span class="style10">So maybe you decide to work around that by giving the highest priority possible to the backup process. This way it finishes as quickly as possible, right? Well, yes, but this will cause serious interference to any <span class="style21"><strong>IndexSearchers</strong></span> that you are using to search the index. Really you should do the reverse: Give the backup process a low priority, or carefully throttle its IO, so that it does not interfere with searching.</span> </div></td>
+  </tr>
+  <tr>
+    <td height="60" scope="row"> <div class="style10" style="text-indent: 40px;">
+    <span class="style10">Suddenly this backup process is really a hassle because it interferes so much with ongoing searches and updates. No wonder so many people just don't bother with backups and only discover, the hard way, just how important they really are.</span> </div></td>
+  </tr>
+  <tr>
+   <th height="66" class="style9" scope="row"><div align="left" class="style11">The solution </div></th>
+  </tr>
+  <tr>
+    <td scope="row"><p class="style10">Fortunately, Lucene's simple segmented architecture, described later in this article, presents an elegant solution. With recent changes in 2.3, it is now possible to make a <em>hot backup</em> of your index, which means backing it up without having to close your <span class="style21"><strong>IndexWriter</strong></span> nor pause indexing or restart searchers. Furthermore, it's fine if the backup process takes as much time as needed because Lucene will protect the necessary files. The backup will be a point-in-time copy of the search index, <em>even if the index is still being changed by the writer.</em></p></td>
+  </tr>
+  <tr>
+   <th height="51" class="style9" scope="row"><div align="left" class="style11 style19">Cutting to the chase </div></th>
+  </tr>
+  <tr>
+    <td height="30" scope="row"> <div class="style10" style="text-indent: 40px;">For the impatient ones among us, this is all you have to do.</div></td>
+  </tr>
+  <tr>
+    <td height="41" scope="row"> <div class="style10" style="text-indent: 40px;"><span class="style20">NOTE</span>: <span class="style27">All code samples in this article are based upon release 2.3.1 of Lucene.</span></div></td>
+  </tr>
+  
+  <tr>
+    <td height="38" scope="row"> <div class="style10" style="text-indent: 46px;">When you instantiate the <span class="style21"><strong>IndexWriter</strong></span>, use the new <span class="style21"><strong>SnapshotDeletionPolicy</strong></span>, like this:</div></td>
+  </tr>
+  <tr>
+    <th scope="row"><div align="right"><img src="images/listing1.jpg" width="485" height="57" /></div></th>
+  </tr>
+  <tr>
+    <td scope="row"><p class="style10">This creates an <span class="style21"><strong>IndexWriter</strong></span> with a special deletion policy. At this point, use your writer as you normally would. You can also use a different original deletion policy than <span class="style21">KeepOnlyLastCommitDeletionPolicy</span> if you need to. Then, when you need to do a backup, initiate it from your writer, like this:</p></td>
+  </tr>
+  <tr>
+    <th scope="row"><div align="right"><img src="images/listing2.jpg"  /></div></th>
+  </tr>
+  <tr>
+    <td height="50" scope="row"> 
+      <p class="style10">You can do this from a separate thread, and continue using the writer as usual in your application to make changes to the index. The backup will copy the <em>point-in-time</em> snapshot as of the moment when you called the <span class="style21"><strong>snapshot()</strong></span> method. </p>    </td>
+  </tr>
+  <tr>
+    <td scope="row"><p class="style10">Here are some important notes to follow when copying the files:</p></td>
+  </tr>
+  <tr>
+    <td height="386" scope="row"><div class="style22" text-align: left;">
+      <blockquote>
+        <p>&#8226;&nbsp;&nbsp;&nbsp;&nbsp;Don't copy the <span class="style21"><strong>write.lock</strong></span> file.</p>
+        <p>&#8226;&nbsp;&nbsp;&nbsp;&nbsp;Always copy the <span class="style21"><strong>segments.gen</strong></span> file.</p>
+		<p>&#8226;&nbsp;&nbsp;&nbsp;&nbsp;For all other files, Lucene is &quot;write once.&rdquo; This makes doing incremental backups very easy: Simply compare the file names. Once a file is written, it will never change; therefore, if you've already backed up that file, there's no need to copy it again.</p>
+		<p>&#8226;&nbsp;&nbsp;&nbsp;&nbsp;You can do the copying in Java, or you can take the filenames and launch a shell to run your favorite backup or file archiving utility, such as rsync, robocopy, cp, tar, or zip. However, take extra care to catch and handle any errors that these tools might encounter. For example, if you get a disk full error, then that will certainly lead to a corrupt backup image.</p>
+		<p>&#8226;&nbsp;&nbsp;&nbsp;&nbsp;You can even throttle the IO usage of the backup program so that it doesn't interfere with ongoing searching or indexing. It really doesn't matter to Lucene how long your backup takes because your backup will always be a point-in-time copy; however, while the backup is running, it will prevent deletion of any files referenced by the point-in-time commit point. This means your index might temporarily use more disk space.</p>
+      </blockquote>
+    </div></td>
+  </tr>
+   <tr>
+    <th scope="row"><div align="center">Page 1 </div></th>
+  </tr>
+</table>
+</body>
+</html>

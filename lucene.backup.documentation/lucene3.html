@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Lucene Page 3</title>
+<style type="text/css">
+<!--
+td
+{
+font-family: verdana;
+font-size: 75%;
+padding-left: 40px;
+padding-right: 40px;
+padding-top: 3px;
+padding-bottom: 3px;
+}
+
+th
+{
+font-family: verdana;
+font-size: 75%;
+text-align: left;
+padding-left: 10px;
+padding-right: 10px;
+padding-top: 3px;
+padding-bottom: 3px;
+}
+-->
+ 
+p.small {line-height: 90%}
+p.big {line-height: 200%}
+.style10 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+}
+.style11 {
+	font-size: 22px;
+	font-style: italic;
+}
+.style13 {color: #990000}
+.style19 {
+	font-family: "Courier New", Courier, monospace;
+	font-size: 12px;
+}
+.style20 {
+	font-family: "Courier New", Courier, monospace;
+	font-weight: bold;
+}
+.style21 {font-family: "Courier New", Courier, monospace}
+</style>
+</head>
+
+<body>
+
+
+</head>
+
+<body onLoad="javascript:document.href='#top'";>
+<a name="top" id="top"></a>
+<table width="687" height="735" border="0">
+ <tr>
+    <th width="681" height="80" class="style11 style13" scope="row">Some minor limitations</th>
+  </tr>
+  <tr>
+    
+  <td height="38" scope="row"><p class="style10"><span class="style20">SnapshotDeletionPolicy</span> has a few minor limitations. First off, you can only hold one snapshot open at a time. You can see that calling snapshot a second time will throw an <span class="style20">IllegalStateException</span>. This normally isn't a problem because you usually don't kick off another backup while a previous one is still running. However, if for some reason you really need more than one snapshot at a time, you could make your own version of <span class="style20">SnapshotDeletionPolicy</span> that changes the snapshot attribute to <span class="style19">Collection
+    &lt;IndexCommitPoint&gt;</span> instead, and updates all methods to use that collection.</p>    </td>
+  </tr>
+ <tr> <td width="681" height="63" scope="row"><div class="style10" style="text-indent: 40px;">The second limitation is that <span class="style20">SnapshotDeletionPolicy</span> will not remember the snapshot when you close your IndexWriter. This means your backup process must finish before you can close and open a new <span class="style20">IndexWriter</span>. Once again, this is simple to fix: Just change it to store its own file in the index <span class="style20">Directory</span>, recording whether or not a snapshot is currently open, and if so, its segments filename (<strong><span class="style21">IndexCommitPoint.getSegmentsFileName</span>()</strong>). Then, in the <span class="style21"><strong>onInit</strong></span> method, re-open that file if it exists and locate the matching commit point in commits, and mark that one as the current snapshot. With this change, your backup can keep running even while you close and open new <strong>IndexWriter</strong>s in a new JVM.</div></td>
+  </tr>
+  <tr> <td width="681" height="63" scope="row"><div class="style10" style="text-indent: 40px;">The third limitation is what happens, or rather doesn&rsquo;t happen, when you call <span class="style21"><strong>release()</strong></span>. When you release a snapshot, it&rsquo;s likely there are now files that are no longer referenced by any commit point or running backup. However, these files are not deleted immediately. Instead, they are deleted the next time <span class="style21"><strong>IndexWriter</strong></span> checks for deleted files. This happens when the writer is opened and when it commits a change to the index. This one is not simple to fix yourself, but, Lucene is always in flux and so maybe a future release will fix it! In the meantime, simply opening and closing an <span class="style21"><strong>IndexWriter</strong></span> will do the trick.</div></td>
+  </tr>
+  <tr>
+    <th width="681" height="58" class="style11 style13" scope="row">Conclusion</th>
+  </tr>
+  <td height="38" scope="row"><p class="style10">Let's face it: someday your search index will suddenly become unusable and your only fast option is to restore from a backup. Maybe you are an optimist and figure it'll be a year or two, or maybe you're a pessimist and count on only a few weeks. Or maybe you figure you can just quickly re-build your entire index when fate comes calling. Whatever your persuasion, it really is only a matter of time until that day comes. Thanks to recent active development in Lucene, making a backup is now a surprisingly simple operation that no longer interferes with ongoing updating and searching. There are no more excuses to delay!</p>    </td>
+  </tr>
+  <tr>
+    <td height="45" scope="row"><div align="center"><strong>Page 3 </strong></div></td>
+  </tr>
+</table>
+</body>
+</html>
