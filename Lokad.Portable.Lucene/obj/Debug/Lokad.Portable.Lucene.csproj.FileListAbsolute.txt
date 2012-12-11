@@ -8,3 +8,8 @@ C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.CQRS.Contrib\Lok
 C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.CQRS.Contrib\Lokad.Portable.Lucene\obj\Debug\Lokad.Portable.Lucene.csprojResolveAssemblyReference.cache
 C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.CQRS.Contrib\Lokad.Portable.Lucene\obj\Debug\Lokad.Portable.Lucene.dll
 C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.CQRS.Contrib\Lokad.Portable.Lucene\obj\Debug\Lokad.Portable.Lucene.pdb
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Lucene\bin\Debug\Lokad.Portable.Lucene.dll
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Lucene\bin\Debug\Lokad.Portable.Lucene.pdb
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Lucene\obj\Debug\Lokad.Portable.Lucene.csprojResolveAssemblyReference.cache
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Lucene\obj\Debug\Lokad.Portable.Lucene.dll
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Lucene\obj\Debug\Lokad.Portable.Lucene.pdb

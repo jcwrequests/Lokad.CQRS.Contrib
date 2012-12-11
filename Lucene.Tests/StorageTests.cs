@@ -13,6 +13,8 @@ namespace Lucene.Tests
     {
         private string entityStorage = @"..\..\Working\Entities";
         private string index = @"..\..\Working\index";
+        private string backup = @"..\..\Working\BackUp";
+
         [TestInitialize]
         public void Initialize()
         {
@@ -24,6 +26,11 @@ namespace Lucene.Tests
             {
                 System.IO.File.Delete(file);
             }
+            foreach (string file in System.IO.Directory.EnumerateFiles(backup))
+            {
+                System.IO.File.Delete(file);
+            }
+
         }
 
 
@@ -106,6 +113,31 @@ namespace Lucene.Tests
                 stopWatch.Reset();
             }
 
+            store.Dispose();
+        }
+
+        [TestMethod]
+        public void store_an_entity_retrieve_it_from_store_perfrom_back_up()
+        {
+
+            var strategy = new LuceneStrategy();
+
+            var store = new FileDocumentReaderWriter<Key, Entity>(entityStorage, strategy, index);
+            var key = new Key("test", DateTime.Parse("01/01/2012"));
+
+            store.AddOrUpdate(key,
+                               () => new Entity(10, 10),
+                               (e) => e,
+                               Lokad.Cqrs.AtomicStorage.AddOrUpdateHint.ProbablyExists);
+            Entity entity;
+
+            Assert.IsTrue(store.TryGet(key, out entity));
+
+            Assert.IsTrue(entity.ItemCount == 10);
+            Assert.IsTrue(entity.TotalAmount == 10);
+
+            store.BackUp(backup);
+            store.BackUp(backup);
             store.Dispose();
         }
     }

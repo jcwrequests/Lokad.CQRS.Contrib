@@ -83,6 +83,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Working\BackUp\" />
     <Folder Include="Working\Entities\" />
     <Folder Include="Working\index\" />
   </ItemGroup>

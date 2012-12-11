@@ -26,6 +26,7 @@ namespace Lokad.Portable.Contrib.AtomicStorage
         private FSDirectory _directory;
         IndexWriter writer;
         KeywordAnalyzer analyzer = new KeywordAnalyzer();
+        SnapshotDeletionPolicy policy;
 
         public FileDocumentReaderWriter(string directoryPath,
                                         IDocumentStrategy strategy,
@@ -40,13 +41,38 @@ namespace Lokad.Portable.Contrib.AtomicStorage
             if (IndexWriter.IsLocked(_directory)) IndexWriter.Unlock(_directory);
             var lockFilePath = Path.Combine(luceneDir, "write.lock");
             if (File.Exists(lockFilePath)) File.Delete(lockFilePath);
-            var policy = new SnapshotDeletionPolicy(new KeepOnlyLastCommitDeletionPolicy());
+            policy = new SnapshotDeletionPolicy(new KeepOnlyLastCommitDeletionPolicy());
             writer = new IndexWriter(_directory, analyzer, policy, IndexWriter.MaxFieldLength.UNLIMITED);
         }
 
         public void InitIfNeeded()
         {
             System.IO.Directory.CreateDirectory(_folder);
+        }
+
+        public void BackUp(string backUpDirectory)
+        {
+            IndexCommit cp = policy.Snapshot();
+            try
+            {
+                var files = cp.FileNames;
+                foreach (var file in files)
+                {
+                    FileInfo fileInfo = new FileInfo(System.IO.Path.Combine(_indexPath,file));
+                    fileInfo.CopyTo(System.IO.Path.Combine(backUpDirectory, 
+                                                           System.IO.Path.GetFileName(file)),
+                                                           true
+                                    );
+               
+                }
+
+            }
+            finally
+            {
+                policy.Release();
+            }
+
+
         }
 
         public bool TryGet(TKey key, out TEntity view)
