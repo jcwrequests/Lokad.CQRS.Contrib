@@ -55,7 +55,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AtomicStorage\ExtendDocumentReader.cs" />
+    <Compile Include="AtomicStorage\ExtendDocumentWriter.cs" />
     <Compile Include="AtomicStorage\FileDocumentReaderWriter.cs" />
+    <Compile Include="AtomicStorage\FileDocumentStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
