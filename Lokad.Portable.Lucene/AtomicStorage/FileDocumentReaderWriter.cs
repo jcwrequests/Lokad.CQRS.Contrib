@@ -55,6 +55,7 @@ namespace Lokad.Portable.Contrib.AtomicStorage
             IndexCommit cp = policy.Snapshot();
             try
             {
+                //copy snapshot files
                 var files = cp.FileNames;
                 foreach (var file in files)
                 {
@@ -65,6 +66,21 @@ namespace Lokad.Portable.Contrib.AtomicStorage
                                     );
                
                 }
+                FileInfo segmentsGen = new FileInfo(System.IO.Path.Combine(_indexPath,"segments.gen"));
+                segmentsGen.CopyTo(System.IO.Path.Combine(backUpDirectory,"segments.gen"),true);
+                var source = System.IO.Directory.EnumerateFiles(_indexPath).
+                             Where(f => !System.IO.Directory.EnumerateFiles(backUpDirectory).Contains(f)).
+                             Where(f => !f.EndsWith("write.lock",StringComparison.InvariantCultureIgnoreCase));
+
+                foreach (var file in source)
+                {
+                    FileInfo item = new FileInfo(file);
+                    item.CopyTo(System.IO.Path.Combine(backUpDirectory, item.Name));
+                }
+
+
+
+                
 
             }
             finally
