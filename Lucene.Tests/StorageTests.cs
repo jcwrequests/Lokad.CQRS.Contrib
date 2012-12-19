@@ -140,6 +140,35 @@ namespace Lucene.Tests
             store.BackUp(backup);
             store.Dispose();
         }
+        [TestMethod]
+        public void store_an_entity_retrieve_it_from_store_perfrom_back_up_and_read_off_back_up()
+        {
+
+            var strategy = new LuceneStrategy();
+
+            var store = new FileDocumentReaderWriter<Key, Entity>(entityStorage, strategy, index);
+            var key = new Key("test", DateTime.Parse("01/01/2012"));
+
+            store.AddOrUpdate(key,
+                               () => new Entity(10, 10),
+                               (e) => e,
+                               Lokad.Cqrs.AtomicStorage.AddOrUpdateHint.ProbablyExists);
+            Entity entity;
+
+            Assert.IsTrue(store.TryGet(key, out entity));
+
+            Assert.IsTrue(entity.ItemCount == 10);
+            Assert.IsTrue(entity.TotalAmount == 10);
+
+            store.BackUp(backup);
+          
+            store.Dispose();
+
+            var backUpStore = new FileDocumentReaderWriter<Key, Entity>(entityStorage, strategy, backup);
+            Assert.IsTrue( backUpStore.TryGet(key, out entity));
+            Assert.IsTrue(entity.TotalAmount == 10);
+
+        }
     }
 
 

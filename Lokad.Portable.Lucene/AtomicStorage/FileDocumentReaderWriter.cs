@@ -66,10 +66,14 @@ namespace Lokad.Portable.Contrib.AtomicStorage
                                     );
                
                 }
+
                 FileInfo segmentsGen = new FileInfo(System.IO.Path.Combine(_indexPath,"segments.gen"));
                 segmentsGen.CopyTo(System.IO.Path.Combine(backUpDirectory,"segments.gen"),true);
+
                 var source = System.IO.Directory.EnumerateFiles(_indexPath).
-                             Where(f => !System.IO.Directory.EnumerateFiles(backUpDirectory).Contains(f)).
+                             Where(f => !System.IO.Directory.EnumerateFiles(backUpDirectory).
+                                         Select(i => Path.GetFileName(i)).
+                                         Contains(Path.GetFileName(f))).
                              Where(f => !f.EndsWith("write.lock",StringComparison.InvariantCultureIgnoreCase));
 
                 foreach (var file in source)
