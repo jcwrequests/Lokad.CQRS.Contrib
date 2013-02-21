@@ -4,27 +4,23 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using ServiceStack.Redis;
 
 namespace Lokad.Portable.Contrib.AtomicStorage
 {
     public sealed class FileDocumentStore : IDocumentStore
     {
-        readonly string _folderPath;
-        readonly IDocumentStrategy _strategy;
-        readonly string _luceneDir;
-        public FileDocumentStore(string folderPath, 
-                                 IDocumentStrategy strategy,
-                                 string luceneDir)
+        RedisClient redisClient;
+        public FileDocumentStore(RedisClient redisClient)
         {
-            _folderPath = folderPath;
-            _strategy = strategy;
-            _luceneDir = luceneDir;
+            if (redisClient == null) throw new ArgumentNullException("redisClient");
+            this.redisClient = redisClient;
         }
 
-        public override string ToString()
-        {
-            return new Uri(Path.GetFullPath(_folderPath)).AbsolutePath;
-        }
+        //public override string ToString()
+        //{
+        //    return new Uri(Path.GetFullPath(_folderPath)).AbsolutePath;
+        //}
 
 
         readonly HashSet<Tuple<Type, Type>> _initialized = new HashSet<Tuple<Type, Type>>();
@@ -32,7 +28,7 @@ namespace Lokad.Portable.Contrib.AtomicStorage
 
         public IDocumentWriter<TKey, TEntity> GetWriter<TKey, TEntity>()
         {
-            var container = new FileDocumentReaderWriter<TKey, TEntity>(_folderPath, _strategy, _luceneDir);
+            var container = new FileDocumentReaderWriter<TKey, TEntity>(redisClient);
             if (_initialized.Add(Tuple.Create(typeof(TKey), typeof(TEntity))))
             {
                 container.InitIfNeeded();
@@ -42,12 +38,12 @@ namespace Lokad.Portable.Contrib.AtomicStorage
 
         public IDocumentReader<TKey, TEntity> GetReader<TKey, TEntity>()
         {
-            return new FileDocumentReaderWriter<TKey, TEntity>(_folderPath, _strategy, _luceneDir);
+            return new FileDocumentReaderWriter<TKey, TEntity>(redisClient);
         }
 
         public IDocumentStrategy Strategy
         {
-            get { return _strategy; }
+            get { return null; }
         }
 
 
