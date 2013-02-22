@@ -46,52 +46,53 @@ namespace Lokad.Portable.Contrib.AtomicStorage
             get { return null; }
         }
 
-
-        public IEnumerable<DocumentRecord> EnumerateContents(string bucket)
+        static byte[] GetBytes(string str)
         {
-            var full = Path.Combine(_folderPath, bucket);
-            var dir = new DirectoryInfo(full);
-            if (!dir.Exists) yield break;
-
-            var fullFolder = dir.FullName;
-            foreach (var info in dir.EnumerateFiles("*", SearchOption.AllDirectories))
-            {
-                var fullName = info.FullName;
-                var path = fullName.Remove(0, fullFolder.Length + 1).Replace(Path.DirectorySeparatorChar, '/');
-                yield return new DocumentRecord(path, () => File.ReadAllBytes(fullName));
-            }
+            byte[] bytes = new byte[str.Length * sizeof(char)];
+            System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
+            return bytes;
         }
 
-        public void WriteContents(string bucket, IEnumerable<DocumentRecord> records)
+        static string GetString(byte[] bytes)
         {
-            var buck = Path.Combine(_folderPath, bucket);
-            if (!Directory.Exists(buck))
-                Directory.CreateDirectory(buck);
+            char[] chars = new char[bytes.Length / sizeof(char)];
+            System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
+            return new string(chars);
+        }
+        public IEnumerable<DocumentRecord> EnumerateContents(string hashId)
+        {
+            var entries = redisClient.GetAllEntriesFromHash(hashId);
+            if (entries.Count.Equals(0)) yield break;
+            foreach (var entry in entries)
+            {
+                yield return new DocumentRecord(entry.Key, () =>  GetBytes(entry.Value));
+
+            }
+
+           
+        }
+
+        public void WriteContents(string hashID, IEnumerable<DocumentRecord> records)
+        {
+            
+            
             foreach (var pair in records)
             {
-                var recordPath = Path.Combine(buck, pair.Key);
-
-                var path = Path.GetDirectoryName(recordPath) ?? "";
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-                File.WriteAllBytes(recordPath, pair.Read());
+                redisClient.SetEntryInHashIfNotExists(hashID, pair.Key,GetString(pair.Read()));
+            
             }
         }
 
-        public void ResetAll()
+        
+        public void Reset(string hashId)
         {
-            if (Directory.Exists(_folderPath))
-                Directory.Delete(_folderPath, true);
-            Directory.CreateDirectory(_folderPath);
-        }
-        public void Reset(string bucket)
-        {
-            var path = Path.Combine(_folderPath, bucket);
-            if (Directory.Exists(path))
-                Directory.Delete(path, true);
-            Directory.CreateDirectory(path);
+            var entries = redisClient.GetAllEntriesFromHash(hashId);
+            if (entries.Count.Equals(0)) return;
+            foreach (var entry in entries)
+            {
+                redisClient.RemoveEntryFromHash(hashId, entry.Key);
+
+            }
         }
     }
 }
