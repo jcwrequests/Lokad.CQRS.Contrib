@@ -4,23 +4,27 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using ServiceStack.Redis;
 
 namespace Lokad.Portable.Contrib.AtomicStorage
 {
     public sealed class FileDocumentStore : IDocumentStore
     {
-        RedisClient redisClient;
-        public FileDocumentStore(RedisClient redisClient)
+        readonly string _folderPath;
+        readonly IDocumentStrategy _strategy;
+        readonly string _luceneDir;
+        public FileDocumentStore(string folderPath, 
+                                 IDocumentStrategy strategy,
+                                 string luceneDir)
         {
-            if (redisClient == null) throw new ArgumentNullException("redisClient");
-            this.redisClient = redisClient;
+            _folderPath = folderPath;
+            _strategy = strategy;
+            _luceneDir = luceneDir;
         }
 
-        //public override string ToString()
-        //{
-        //    return new Uri(Path.GetFullPath(_folderPath)).AbsolutePath;
-        //}
+        public override string ToString()
+        {
+            return new Uri(Path.GetFullPath(_folderPath)).AbsolutePath;
+        }
 
 
         readonly HashSet<Tuple<Type, Type>> _initialized = new HashSet<Tuple<Type, Type>>();
@@ -28,7 +32,7 @@ namespace Lokad.Portable.Contrib.AtomicStorage
 
         public IDocumentWriter<TKey, TEntity> GetWriter<TKey, TEntity>()
         {
-            var container = new FileDocumentReaderWriter<TKey, TEntity>(redisClient);
+            var container = new FileDocumentReaderWriter<TKey, TEntity>(_folderPath, _strategy, _luceneDir);
             if (_initialized.Add(Tuple.Create(typeof(TKey), typeof(TEntity))))
             {
                 container.InitIfNeeded();
@@ -38,61 +42,60 @@ namespace Lokad.Portable.Contrib.AtomicStorage
 
         public IDocumentReader<TKey, TEntity> GetReader<TKey, TEntity>()
         {
-            return new FileDocumentReaderWriter<TKey, TEntity>(redisClient);
+            return new FileDocumentReaderWriter<TKey, TEntity>(_folderPath, _strategy, _luceneDir);
         }
 
         public IDocumentStrategy Strategy
         {
-            get { return null; }
+            get { return _strategy; }
         }
 
-        static byte[] GetBytes(string str)
-        {
-            byte[] bytes = new byte[str.Length * sizeof(char)];
-            System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
-            return bytes;
-        }
 
-        static string GetString(byte[] bytes)
+        public IEnumerable<DocumentRecord> EnumerateContents(string bucket)
         {
-            char[] chars = new char[bytes.Length / sizeof(char)];
-            System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
-            return new string(chars);
-        }
-        public IEnumerable<DocumentRecord> EnumerateContents(string hashId)
-        {
-            var entries = redisClient.GetAllEntriesFromHash(hashId);
-            if (entries.Count.Equals(0)) yield break;
-            foreach (var entry in entries)
+            var full = Path.Combine(_folderPath, bucket);
+            var dir = new DirectoryInfo(full);
+            if (!dir.Exists) yield break;
+
+            var fullFolder = dir.FullName;
+            foreach (var info in dir.EnumerateFiles("*", SearchOption.AllDirectories))
             {
-                yield return new DocumentRecord(entry.Key, () =>  GetBytes(entry.Value));
-
+                var fullName = info.FullName;
+                var path = fullName.Remove(0, fullFolder.Length + 1).Replace(Path.DirectorySeparatorChar, '/');
+                yield return new DocumentRecord(path, () => File.ReadAllBytes(fullName));
             }
-
-           
         }
 
-        public void WriteContents(string hashID, IEnumerable<DocumentRecord> records)
+        public void WriteContents(string bucket, IEnumerable<DocumentRecord> records)
         {
-            
-            
+            var buck = Path.Combine(_folderPath, bucket);
+            if (!Directory.Exists(buck))
+                Directory.CreateDirectory(buck);
             foreach (var pair in records)
             {
-                redisClient.SetEntryInHashIfNotExists(hashID, pair.Key,GetString(pair.Read()));
-            
+                var recordPath = Path.Combine(buck, pair.Key);
+
+                var path = Path.GetDirectoryName(recordPath) ?? "";
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                File.WriteAllBytes(recordPath, pair.Read());
             }
         }
 
-        
-        public void Reset(string hashId)
+        public void ResetAll()
         {
-            var entries = redisClient.GetAllEntriesFromHash(hashId);
-            if (entries.Count.Equals(0)) return;
-            foreach (var entry in entries)
-            {
-                redisClient.RemoveEntryFromHash(hashId, entry.Key);
-
-            }
+            if (Directory.Exists(_folderPath))
+                Directory.Delete(_folderPath, true);
+            Directory.CreateDirectory(_folderPath);
+        }
+        public void Reset(string bucket)
+        {
+            var path = Path.Combine(_folderPath, bucket);
+            if (Directory.Exists(path))
+                Directory.Delete(path, true);
+            Directory.CreateDirectory(path);
         }
     }
 }

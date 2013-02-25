@@ -39,6 +39,9 @@
     <Reference Include="Lokad.Cqrs.Portable">
       <HintPath>..\Library\Lokad.Cqrs.Portable.dll</HintPath>
     </Reference>
+    <Reference Include="Lucene.Net">
+      <HintPath>..\Library\Lucene.Net.dll</HintPath>
+    </Reference>
     <Reference Include="protobuf-net">
       <HintPath>..\Library\protobuf-net.dll</HintPath>
     </Reference>
@@ -67,6 +70,10 @@
     <Compile Include="ExtendDocumentWriter.cs" />
     <Compile Include="FileDocumentReaderWriter.cs" />
     <Compile Include="FileDocumentStore.cs" />
+    <Compile Include="LuceneDocumentReaderWriter.cs" />
+    <Compile Include="LuceneDocumentStore.cs" />
+    <Compile Include="RedisDocumentReaderWriter.cs" />
+    <Compile Include="RedisDocumentStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

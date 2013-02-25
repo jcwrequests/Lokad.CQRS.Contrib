@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lucene.Wires", "Lucene.Wire
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lucene.Tests", "Lucene.Tests\Lucene.Tests.csproj", "{28AAC2F3-EA21-43C8-9E97-00AD000C7EAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lokad.Portable.Redis", "Lokad.Portable.Redis\Lokad.Portable.Redis.csproj", "{6B735C13-AF57-47FF-868F-AA9C10203842}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lokad.Portable.Contrib", "Lokad.Portable.Redis\Lokad.Portable.Contrib.csproj", "{6B735C13-AF57-47FF-868F-AA9C10203842}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
