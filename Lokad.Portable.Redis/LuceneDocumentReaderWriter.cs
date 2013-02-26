@@ -47,18 +47,32 @@ namespace Lokad.Portable.Contrib.AtomicStorage
             view = default(TEntity);
             try
             {
-               
+                view = GetEntity(key, _strategy, _directory);
+                return true;
             }
             catch (Exception ex)
             {
-
+                return false;
             }
-            throw new NotImplementedException();
+            
         }
 
         public TEntity AddOrUpdate(TKey key, Func<TEntity> addFactory, Func<TEntity, TEntity> update, AddOrUpdateHint hint = AddOrUpdateHint.ProbablyExists)
         {
-            throw new NotImplementedException();
+            TEntity result;
+            var entity = GetEntity(key, _strategy, _directory);
+
+            if (entity == null)
+            {
+                result = addFactory();
+                StoreResultInIndex(key, result);
+            }
+            else 
+            {
+                result = update(entity);
+                StoreResultInIndex(key,result);
+            }
+            return result;
         }
 
         private void StoreResultInIndex(TKey key, TEntity entity)
@@ -114,18 +128,18 @@ namespace Lokad.Portable.Contrib.AtomicStorage
 
             return query;
         }
-        private TEntity GetEntity(TKey key)
+        private static TEntity GetEntity(TKey key,IDocumentStrategy strategy,FSDirectory _directory)
         {
-            var reader = IndexReader.Open(_directory, false);
+            var reader = IndexReader.Open( _directory, false);
             using (var searcher = new IndexSearcher(reader))
             {
                 var hits_limit = 1000;
              
                 {
                     var query = CreateQuery(key);
-
+                    
                     var hits = searcher.Search(query, hits_limit).ScoreDocs;
-                    var results = mapLuceneToDataList(hits, searcher);
+                    var results = mapLuceneToDataList(hits, searcher,strategy);
 
                     searcher.Dispose();
 
@@ -134,24 +148,42 @@ namespace Lokad.Portable.Contrib.AtomicStorage
 
             }
         }
-            private static IEnumerable<TEntity> mapLuceneToDataList(IEnumerable<ScoreDoc> hits, IndexSearcher searcher)
+        private static IEnumerable<TEntity> mapLuceneToDataList(IEnumerable<ScoreDoc> hits, IndexSearcher searcher,IDocumentStrategy strategy)
         {
-            return hits.Select(hit => mapLuceneDocumentToData(searcher.Doc(hit.Doc)));
+            return hits.Select(hit => mapLuceneDocumentToData(searcher.Doc(hit.Doc),strategy));
         }
-            private static TEntity mapLuceneDocumentToData(Document doc)
+        private  static TEntity mapLuceneDocumentToData(Document doc, IDocumentStrategy strategy)
+        {
+            if (doc == null) return default(TEntity);
+
+            var document = doc.Get("document");
+            using (var documentStream = new System.IO.MemoryStream(GetBytes(document)))
             {
-                //return doc.Get("documentPath");
-                //deserialize document to type
-                throw new NotImplementedException();
+                return strategy.Deserialize<TEntity>(documentStream);
             }
+                
+        }
         public bool TryDelete(TKey key)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var searchQuery = CreateQuery(key);
+                writer.DeleteDocuments(searchQuery);
+                writer.Commit();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            
+
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            analyzer.Close();
+            writer.Dispose();
         }
     }
 }
