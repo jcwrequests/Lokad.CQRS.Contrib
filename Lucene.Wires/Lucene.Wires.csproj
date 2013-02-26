@@ -59,12 +59,6 @@
     <Compile Include="LuceneStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Lokad.Portable.Lucene\Lokad.Portable.Lucene.csproj">
-      <Project>{cc70a907-2421-4bb8-ae00-abbf6bc20138}</Project>
-      <Name>Lokad.Portable.Lucene</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -7,8 +7,8 @@
     <ProjectGuid>{6B735C13-AF57-47FF-868F-AA9C10203842}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Lokad.Portable.Redis</RootNamespace>
-    <AssemblyName>Lokad.Portable.Redis</AssemblyName>
+    <RootNamespace>Lokad.Portable.Contrib</RootNamespace>
+    <AssemblyName>Lokad.Portable.Contrib</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -73,9 +73,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Lokad.Portable.Lucene\Lokad.Portable.Lucene.csproj">
-      <Project>{cc70a907-2421-4bb8-ae00-abbf6bc20138}</Project>
-      <Name>Lokad.Portable.Lucene</Name>
+    <ProjectReference Include="..\Lokad.Portable.Contrib\Lokad.Portable.Contrib.csproj">
+      <Project>{6b735c13-af57-47ff-868f-aa9c10203842}</Project>
+      <Name>Lokad.Portable.Contrib</Name>
     </ProjectReference>
     <ProjectReference Include="..\Lucene.Wires\Lucene.Wires.csproj">
       <Project>{fb5cce6b-0f5c-40f3-8c39-1ed78b21807e}</Project>
