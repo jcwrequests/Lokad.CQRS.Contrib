@@ -102,16 +102,13 @@ namespace Lokad.Portable.Contrib.AtomicStorage
         }
         static byte[] GetBytes(string str)
         {
-            byte[] bytes = new byte[str.Length * sizeof(char)];
-            System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
-            return bytes;
+            return System.Text.ASCIIEncoding.ASCII.GetBytes(str.ToCharArray());
         }
 
         static string GetString(byte[] bytes)
         {
-            char[] chars = new char[bytes.Length / sizeof(char)];
-            System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
-            return new string(chars);
+            return System.Text.ASCIIEncoding.ASCII.GetString(bytes);
+       
         }
         private static BooleanQuery CreateQuery(TKey key)
         {
@@ -184,6 +181,50 @@ namespace Lokad.Portable.Contrib.AtomicStorage
         {
             analyzer.Close();
             writer.Dispose();
+        }
+        public void BackUp(string backUpDirectory)
+        {
+            IndexCommit cp = policy.Snapshot();
+            try
+            {
+                //copy snapshot files
+                var files = cp.FileNames;
+                foreach (var file in files)
+                {
+                    FileInfo fileInfo = new FileInfo(System.IO.Path.Combine(_indexPath, file));
+                    fileInfo.CopyTo(System.IO.Path.Combine(backUpDirectory,
+                                                           System.IO.Path.GetFileName(file)),
+                                                           true
+                                    );
+
+                }
+
+                FileInfo segmentsGen = new FileInfo(System.IO.Path.Combine(_indexPath, "segments.gen"));
+                segmentsGen.CopyTo(System.IO.Path.Combine(backUpDirectory, "segments.gen"), true);
+
+                var source = System.IO.Directory.EnumerateFiles(_indexPath).
+                             Where(f => !System.IO.Directory.EnumerateFiles(backUpDirectory).
+                                         Select(i => Path.GetFileName(i)).
+                                         Contains(Path.GetFileName(f))).
+                             Where(f => !f.EndsWith("write.lock", StringComparison.InvariantCultureIgnoreCase));
+
+                foreach (var file in source)
+                {
+                    FileInfo item = new FileInfo(file);
+                    item.CopyTo(System.IO.Path.Combine(backUpDirectory, item.Name));
+                }
+
+
+
+
+
+            }
+            finally
+            {
+                policy.Release();
+            }
+
+
         }
     }
 }

@@ -1,0 +1,17 @@
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Contrib.Tests\bin\Debug\Lokad.Portable.Contrib.Tests.dll
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Contrib.Tests\bin\Debug\Lokad.Portable.Contrib.Tests.pdb
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Contrib.Tests\bin\Debug\Lokad.Portable.Contrib.dll
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Contrib.Tests\bin\Debug\Lucene.Wires.dll
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Contrib.Tests\bin\Debug\ServiceStack.Redis.dll
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Contrib.Tests\bin\Debug\ServiceStack.Interfaces.dll
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Contrib.Tests\bin\Debug\ServiceStack.Common.dll
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Contrib.Tests\bin\Debug\ServiceStack.Text.dll
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Contrib.Tests\bin\Debug\Lokad.Portable.Contrib.pdb
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Contrib.Tests\bin\Debug\Lucene.Wires.pdb
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Contrib.Tests\bin\Debug\ServiceStack.Redis.xml
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Contrib.Tests\bin\Debug\ServiceStack.Interfaces.xml
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Contrib.Tests\bin\Debug\ServiceStack.Common.xml
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Contrib.Tests\bin\Debug\ServiceStack.Text.xml
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Contrib.Tests\obj\Debug\Lokad.Portable.Contrib.Tests.csprojResolveAssemblyReference.cache
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Contrib.Tests\obj\Debug\Lokad.Portable.Contrib.Tests.dll
+C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\Lokad.Portable.Contrib.Tests\obj\Debug\Lokad.Portable.Contrib.Tests.pdb
