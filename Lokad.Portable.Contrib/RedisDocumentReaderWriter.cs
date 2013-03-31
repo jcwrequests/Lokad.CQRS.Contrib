@@ -56,7 +56,8 @@ namespace Lokad.Portable.Contrib.AtomicStorage
             string hashedKey = null;
             using( MemoryStream keyStream = new MemoryStream())
             {
-                Serializer.Serialize(keyStream, key);
+         
+                Serializer.Serialize<TKey>(keyStream, key);
                 shaHash = sha1.ComputeHash(keyStream.ToArray());
                 hashedKey = System.Text.UTF8Encoding.UTF8.GetString(shaHash);
             }
@@ -72,6 +73,8 @@ namespace Lokad.Portable.Contrib.AtomicStorage
             var entity = redisClient.Get<TEntity>(hashedKey);
             bool isNew = (entity == null);
             TEntity result = (isNew ? addFactory() : update(entity));
+
+            redisClient.Set<TEntity>(hashedKey, result);
 
             return result;
 

@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.Diagnostics;
 using Lucene.Wires;
 using Lokad.Portable.Contrib.AtomicStorage;
+using ProtoBuf;
 
 namespace Lucene.Tests
 {
@@ -175,7 +176,8 @@ namespace Lucene.Tests
 
 
 
-
+    [Serializable]
+    [ProtoContract(ImplicitFields = ImplicitFields.AllFields)]
     public class Key
     {
         private string _tenantId;
@@ -190,6 +192,8 @@ namespace Lucene.Tests
         public string TenantId { get { return _tenantId; } }
         public string Created { get { return _created.ToShortDateString(); } }
     }
+
+    [Serializable]
     [DataContract(Namespace = "DDDSample")]
     public class Entity
     {
@@ -200,7 +204,7 @@ namespace Lucene.Tests
             this.TotalAmount = totalAmount;
         }
         [DataMember(Order = 1)]
-        public int ItemCount { get; private set; }
+        public int ItemCount { get;  set; }
         [DataMember(Order = 2)]
         public decimal TotalAmount { get; private set; }
         public override string ToString()
