@@ -1,9 +1,0 @@
-C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\FSharpHelloWorld\FSharpHelloWorld\obj\Debug\FSharpHelloWorld.fsprojResolveAssemblyReference.cache
-C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\FSharpHelloWorld\FSharpHelloWorld\bin\Debug\FSharpHelloWorld.exe.config
-C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\FSharpHelloWorld\FSharpHelloWorld\bin\Debug\FSharpHelloWorld.XML
-C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\FSharpHelloWorld\FSharpHelloWorld\bin\Debug\FSharpHelloWorld.exe
-C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\FSharpHelloWorld\FSharpHelloWorld\bin\Debug\FSharpHelloWorld.pdb
-C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\FSharpHelloWorld\FSharpHelloWorld\bin\Debug\FSharp.Core.dll
-C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\FSharpHelloWorld\FSharpHelloWorld\bin\Debug\FSharp.Core.xml
-C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\FSharpHelloWorld\FSharpHelloWorld\obj\Debug\FSharpHelloWorld.exe
-C:\Users\wydev\Documents\GitHub\Clones\Lokad.CQRS.Contrib\FSharpHelloWorld\FSharpHelloWorld\obj\Debug\FSharpHelloWorld.pdb
