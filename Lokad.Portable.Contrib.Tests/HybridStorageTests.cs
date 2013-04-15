@@ -15,7 +15,7 @@ namespace Lucene.Tests
         private string entityStorage = @"..\..\Working\Hybrid\Entities";
         private string index = @"..\..\Working\Hybrid\index";
         private string backup = @"..\..\Working\Hybrid\BackUp";
-
+        //testing new git for windows
         [TestInitialize]
         public void Initialize()
         {
